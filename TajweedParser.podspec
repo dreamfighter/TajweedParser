@@ -16,8 +16,10 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "TajweedParser"
-  spec.version      = "1.0.0"
-  spec.summary      = "A short description of TajweedParser."
+  spec.version      = "1.0.1"
+  spec.summary      = "Tajweed Quran Parser for Ios"
+  spec.pod_target_xcconfig = { 'SWIFT_VERSION' => '5.0' }
+  spec.swift_versions = "4.0"
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -25,6 +27,8 @@ Pod::Spec.new do |spec|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   spec.description  = <<-DESC
+  # TajweedParser
+  Tajweed Quran Parser for Ios bassed on [quran-tajweed](http://api.alquran.cloud/v1/quran/quran-tajweed)
                    DESC
 
   spec.homepage     = "https://dreamfighter.id/"
@@ -38,8 +42,8 @@ Pod::Spec.new do |spec|
   #  Popular ones are 'MIT', 'BSD' and 'Apache License, Version 2.0'.
   #
 
-  spec.license      = "MIT (example)"
-  # spec.license      = { :type => "MIT", :file => "FILE_LICENSE" }
+  # spec.license      = "MIT"
+  spec.license      = { :type => "MIT", :file => "LICENSE" }
 
 
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -67,8 +71,8 @@ Pod::Spec.new do |spec|
   # spec.platform     = :ios, "5.0"
 
   #  When using multiple platforms
-  # spec.ios.deployment_target = "5.0"
-  # spec.osx.deployment_target = "10.7"
+  spec.ios.deployment_target = "13.0"
+  # spec.osx.deployment_target = "10.15"
   # spec.watchos.deployment_target = "2.0"
   # spec.tvos.deployment_target = "9.0"
 
@@ -79,7 +83,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source       = { :git => "https://github.com/dreamfighter/TajweedParser", :tag => "#{spec.version}" }
+  spec.source       = { :git => "https://github.com/dreamfighter/TajweedParser.git", :tag => "#{spec.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -90,8 +94,8 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "Classes", "Classes/**/*.{h,m}"
-  spec.exclude_files = "Classes/Exclude"
+  spec.source_files  = "TajweedParser/**/*"
+  #spec.exclude_files = "Classes/Exclude"
 
   # spec.public_header_files = "Classes/**/*.h"
 
