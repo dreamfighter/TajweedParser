@@ -31,7 +31,7 @@ Pod::Spec.new do |spec|
   Tajweed Quran Parser for Ios bassed on [quran-tajweed](http://api.alquran.cloud/v1/quran/quran-tajweed)
                    DESC
 
-  spec.homepage     = "https://dreamfighter.id/"
+  spec.homepage     = "https://github.com/dreamfighter/TajweedParser"
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
