@@ -1,0 +1,231 @@
+//
+//  TajweedParser.swift
+//  TajweedParser
+//
+//  Created by Fitra Bayu on 05/11/23.
+//
+
+import Foundation
+import SwiftUI
+
+public struct TajweedColors: View {
+    var text:String
+    var metaColor:MetaColor = MetaColor()
+    var font = Font.system(size: 36)
+    public init(text: String) {
+        self.text = text
+    }
+    
+    public var body: some View {
+        let string = text
+        let utf8View: String.UTF8View = string.utf8
+        let textsAyah = build(rawAyah: String(decoding: utf8View, as: UTF8.self),metaColor: metaColor)
+        TextTajweedColors(textAyah: textsAyah,i: 0).font(font)
+    }
+}
+
+struct TajweedAyah:Identifiable{
+    var id:Int
+    var color:String
+    var text:String
+}
+
+struct MetaColor{
+    //var defaultColor: String = "#000000",
+
+    //hamza-wasl, silent, laam-shamsiyah
+        var hsl: String = "#000000"
+
+    //Normal Prolongation: 2 Vowels
+        var madda_normal: String = "#537FFF"
+
+    //Permissible Prolongation: 2, 4, 6 Vowels
+        var madda_permissible: String = "#4050FF"
+
+    //Necessary Prolongation: 6 Vowels
+        var madda_necesssary: String = "#000EBC"
+
+    //Obligatory Prolongation: 4-5 Vowels
+        var madda_obligatory: String = "#2144C1"
+
+    //Qalaqah
+        var qalaqah: String = "#DD0008"
+
+    //Ikhafa' Shafawi - With Meem
+        var ikhafa_shafawi: String = "#D500B7"
+
+    //Ikhafa'
+        var ikhafa: String = "#9400A8"
+
+    //Idgham Shafawi - With Meem
+        var idgham_shafawi: String = "#58B800"
+
+    //Iqlab
+        var iqlab: String = "#26BFFD"
+
+    //Idgham - With Ghunnah
+        var idgham_with_ghunnah: String = "#169777"
+
+    //Idgham - Without Ghunnah
+        var idgham_without_ghunnah: String = "#169200"
+
+    //Idgham - Mutajanisayn
+        var idgham_mutajanisayn: String = "#A1A1A1"
+    //Idgham - Mutaqaribayn
+        var idgham_mutaqaribayn: String = "#A1A1A1"
+
+    //Ghunnah: 2 Vowels
+        var ghunnah: String = "#FF7E1E"
+}
+
+func build(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
+    var datas = [TajweedAyah]()
+    do {
+        let tajweedMetas = "hslnpmqocfwiaudbg"
+        print("rawayah \(rawAyah) ")
+        let atSearch = try Regex("[\\[0-9:]")
+        let ayah = rawAyah.replacing(atSearch, with: "")
+        
+        var splits = [String]()
+        var temp = ""
+        ayah.forEach { char in
+            if char == "[" || char == "]"{
+                splits.append(temp)
+                temp = ""
+            }else if tajweedMetas.contains(char){
+                splits.append(temp)
+                temp = ""
+                splits.append(String(char))
+            }else{
+                temp.append(char)
+            }
+        }
+        splits.append(temp)
+        
+        var metaSpilt:String = ""
+        var i:Int = 0
+        for ayahSpilt in splits {
+            print("ayahSpilt \(ayahSpilt)")
+            if tajweedMetas.contains(ayahSpilt){
+                metaSpilt = ayahSpilt
+            }else if(!metaSpilt.isEmpty){
+                let metaColor = metaToColor(meta:metaSpilt.first!,metaColor: metaColor)
+                
+                datas.append(TajweedAyah(id:i, color: metaColor, text: ayahSpilt))
+                metaSpilt = ""
+                i+=1
+            }else{
+                datas.append(TajweedAyah(id:i, color: "#000000", text: ayahSpilt))
+                i+=1
+            }
+        }
+    }catch{
+        print("regex error")
+    }
+    return datas
+}
+
+private func TextTajweedColors(textAyah: [TajweedAyah],i:Int) -> Text {
+    if i<textAyah.count-1 {
+        return Text(textAyah[i].text).foregroundColor(Color(UIColor.fromHexString(hex: textAyah[i].color))) + TextTajweedColors(textAyah: textAyah,i:i+1)
+    }else{
+        return Text(textAyah[i].text).foregroundColor(Color(UIColor.fromHexString(hex: textAyah[i].color)))
+    }
+}
+
+private func metaToColor(meta: Character,metaColor:MetaColor)-> String {
+    var color: String = "#000000"
+    switch(meta) {
+        case "h":
+        color = metaColor.hsl //hsl
+        case "l":
+            color = metaColor.hsl //hsl
+        case "s":
+            color = metaColor.hsl //hsl
+        case "n" :
+            color = metaColor.madda_normal
+        case "p" :
+        color = metaColor.madda_permissible
+        case "m" :
+        color = metaColor.madda_necesssary
+        case "q" :
+        color = metaColor.qalaqah
+        case "o" :
+        color = metaColor.madda_obligatory
+        case "c" :
+        color = metaColor.ikhafa_shafawi
+        case "f" :
+        color = metaColor.ikhafa
+        case "w" :
+        color = metaColor.idgham_shafawi
+        case "i" :
+        color = metaColor.iqlab
+        case "a" :
+        color = metaColor.idgham_with_ghunnah
+        case "u" :
+        color = metaColor.idgham_without_ghunnah
+        case "d" :
+        color = metaColor.idgham_mutajanisayn
+        case "b" :
+        color = metaColor.idgham_mutaqaribayn
+        case "g" :
+        color = metaColor.ghunnah
+    default :
+        color = "#000000"
+    }
+    return color
+}
+
+extension UIColor {
+    convenience init(red: Int, green: Int, blue: Int) {
+        assert(red >= 0 && red <= 255, "Invalid red component")
+        assert(green >= 0 && green <= 255, "Invalid green component")
+        assert(blue >= 0 && blue <= 255, "Invalid blue component")
+        
+        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+    }
+    convenience init(red: Int, green: Int, blue: Int, alpha:CGFloat) {
+        assert(red >= 0 && red <= 255, "Invalid red component")
+        assert(green >= 0 && green <= 255, "Invalid green component")
+        assert(blue >= 0 && blue <= 255, "Invalid blue component")
+        
+        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: alpha)
+    }
+    
+    convenience init(rgb: Int) {
+        self.init(
+            red: (rgb >> 16) & 0xFF,
+            green: (rgb >> 8) & 0xFF,
+            blue: rgb & 0xFF
+        )
+    }
+    
+    static func fromHexString(hex:String) -> UIColor {
+        
+        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
+        if (cString.hasPrefix("#")) {
+            cString.remove(at: cString.startIndex)
+        }
+        
+        if ((cString.count) != 6) {
+            return UIColor.gray
+        }
+        
+        var rgbValue: UInt64 = 0
+        Scanner(string: cString).scanHexInt64(&rgbValue)
+        
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        TajweedColors(text:"بِسْمِ [h:1[ٱ]للَّهِ [h:2[ٱ][l[ل]رَّحْمَ[n[ـٰ]نِ [h:3[ٱ][l[ل]رَّح[p[ي]مِ")
+    }
+}
