@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+@available(iOS 13.0, *)
 public struct TajweedColors: View {
     var text:String
     var metaColor:MetaColor = MetaColor()
@@ -24,6 +25,7 @@ public struct TajweedColors: View {
     }
 }
 
+@available(iOS 13.0, *)
 public func TajweedColorText( text:String, metaColor:MetaColor = MetaColor()) -> Text{
     let string = text
     let utf8View: String.UTF8View = string.utf8
@@ -172,6 +174,7 @@ func build(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
     return datas
 }
 
+@available(iOS 13.0, *)
 private func TextTajweedColors(textAyah: [TajweedAyah],i:Int) -> Text {
     if i<textAyah.count-1 {
         return Text(textAyah[i].text).foregroundColor(Color(UIColor.fromHexString(hex: textAyah[i].color))) + TextTajweedColors(textAyah: textAyah,i:i+1)
@@ -272,6 +275,7 @@ extension UIColor {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    @available(iOS 13.0.0, *)
     static var previews: some View {
         TajweedColors(text:"بِسْمِ [h:1[ٱ]للَّهِ [h:2[ٱ][l[ل]رَّحْمَ[n[ـٰ]نِ [h:3[ٱ][l[ل]رَّح[p[ي]مِ")
     }
