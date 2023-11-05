@@ -6,54 +6,25 @@ Tajweed Quran Parser for iOS bassed on [quran-tajweed](http://api.alquran.cloud/
 ## Setup
 
 #### Step 1
-add to your project build.gradle at the end of repositories
+add to your project Podfile
 ```pod
-pod 'OnlyPictures'
-```
-#### Step 2
-add the dependency to the `build.gradle` app module:
-```groovy
-implementation 'com.github.vipafattal:TajweedParser:1.0.1'
+pod 'TajweedParser'
 ```
 
 #### Usage
 
-The library is based on https://alquran.cloud/api, on edition `quran-tajweed`.Once you have `quran-tajweed` inside the app you can call `TajweedHelper.getStyledAyah(Aya.text)` to return a [Spannable](https://developer.android.com/reference/android/text/Spannable) text. Use TextView widgets with Spannable text.
+The library is based on https://alquran.cloud/api, on edition `quran-tajweed`.Once you have `quran-tajweed` inside the app you can call `TajweedColorText(text:string)` to return a [Text](https://developer.android.com/reference/android/text/Spannable) text. Use TextView widgets with Spannable text.
 
-```kotlin
-val ayaTextView: TextView = findViewById(R.id.ayahText)
-ayaTextView.text = TajweedHelper.getStyledAyah(aya.text)
+```swift
+let string = "بِسْمِ [h:1[ٱ]للَّهِ [h:2[ٱ][l[ل]رَّحْمَ[n[ـٰ]نِ [h:3[ٱ][l[ل]رَّح[p[ي]مِ"
+TajweedColorText(text:string).font(.system(size: 36))
 ```
 
 You can also change the colors by creating a class of `MetaColors` and overriding the color properties:
 ```Kotlin
-val metaColors = MetaColors(hsl = "#FF6200EE", ikhafa = "#D50000")
-TajweedHelper.setTajweedMetasColor(metaColors)
+let metaColor = MetaColor(hsl:"#FF6200EE", ikhafa:"#D50000")
+TajweedColorText(text:string,metaColor:metaColor).font(.system(size: 36))
 ```
-then use `setTajweedMetasColor(MetaColors)` to force library to use your custom colors.
-
-```Kotlin
-TajweedHelper.setTajweedMetasColor(customMetaColors)
-```
-
-To use TajweedHepler, which is a singleton in Kotlin, in your Java code you need to obtain INSTANCE:
-
-```Java 
-TajweedHelper th = TajweedHelper.INSTANCE;
-th.getStyledAyah(aya.text);
-```
-
-## Full Example
-See the [app](https://github.com/vipafattal/TajweedParser/blob/master/test.png) module for full example.
-
-You can also download the apk from this [link](https://drive.google.com/file/d/10EbERrszIuVqBfxIQkm5whGXcHjibpG5/view?usp=sharing).
-
-<p align="center">
-<img src="https://github.com/vipafattal/TajweedParser/blob/master/test.png" width=35% >
-</p>
-
-## Styles
-This table of the Tajweed metas of the `quran-tajweed` (obtained from [link](https://github.com/vipafattal/alquran-tools/blob/master/docs/tajweed.md)):
 
 ## The  Library Functionality 
 This library takes the output of the Tajweed edition, and creates a Spannalbe Android Widget friendly text.
