@@ -122,8 +122,16 @@ func build(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
     do {
         let tajweedMetas = "hslnpmqocfwiaudbg"
         print("rawayah \(rawAyah) ")
-        let atSearch = try Regex("[\\[0-9:]")
-        let ayah = rawAyah.replacing(atSearch, with: "")
+        var ayah = ""
+        if #available(iOS 16.0, *) {
+            let atSearch = try Regex("[\\[0-9:]")
+            ayah = rawAyah.replacing(atSearch, with: "")
+        } else {
+            let regex = try! NSRegularExpression(pattern: "[\\[0-9:]", options: NSRegularExpression.Options.caseInsensitive)
+            let range = NSMakeRange(0, rawAyah.count)
+            ayah = regex.stringByReplacingMatches(in: rawAyah, options: [], range: range, withTemplate: "XX")
+        }
+        
         
         var splits = [String]()
         var temp = ""
