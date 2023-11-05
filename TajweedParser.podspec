@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "TajweedParser"
-  spec.version      = "1.0.2"
+  spec.version      = "1.0.3"
   spec.summary      = "Tajweed Quran Parser for Ios"
   spec.pod_target_xcconfig = { 'SWIFT_VERSION' => '5.0' }
   spec.swift_versions = "4.0"
