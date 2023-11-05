@@ -24,58 +24,97 @@ public struct TajweedColors: View {
     }
 }
 
+public func TajweedColorText( text:String, metaColor:MetaColor = MetaColor()) -> Text{
+    let string = text
+    let utf8View: String.UTF8View = string.utf8
+    let textsAyah = build(rawAyah: String(decoding: utf8View, as: UTF8.self),metaColor: metaColor)
+    return TextTajweedColors(textAyah: textsAyah,i: 0)
+}
+
 struct TajweedAyah:Identifiable{
     var id:Int
     var color:String
     var text:String
 }
 
-struct MetaColor{
-    //var defaultColor: String = "#000000",
+public struct MetaColor{
 
     //hamza-wasl, silent, laam-shamsiyah
-        var hsl: String = "#000000"
+    var hsl: String = "#000000"
 
     //Normal Prolongation: 2 Vowels
-        var madda_normal: String = "#537FFF"
+    var madda_normal: String = "#537FFF"
 
     //Permissible Prolongation: 2, 4, 6 Vowels
-        var madda_permissible: String = "#4050FF"
+    var madda_permissible: String = "#4050FF"
 
     //Necessary Prolongation: 6 Vowels
-        var madda_necesssary: String = "#000EBC"
+    var madda_necesssary: String = "#000EBC"
 
     //Obligatory Prolongation: 4-5 Vowels
-        var madda_obligatory: String = "#2144C1"
+    var madda_obligatory: String = "#2144C1"
 
     //Qalaqah
-        var qalaqah: String = "#DD0008"
+    var qalaqah: String = "#DD0008"
 
     //Ikhafa' Shafawi - With Meem
-        var ikhafa_shafawi: String = "#D500B7"
+    var ikhafa_shafawi: String = "#D500B7"
 
     //Ikhafa'
-        var ikhafa: String = "#9400A8"
+    var ikhafa: String = "#9400A8"
 
     //Idgham Shafawi - With Meem
-        var idgham_shafawi: String = "#58B800"
+    var idgham_shafawi: String = "#58B800"
 
     //Iqlab
-        var iqlab: String = "#26BFFD"
+    var iqlab: String = "#26BFFD"
 
     //Idgham - With Ghunnah
-        var idgham_with_ghunnah: String = "#169777"
+    var idgham_with_ghunnah: String = "#169777"
 
     //Idgham - Without Ghunnah
-        var idgham_without_ghunnah: String = "#169200"
+    var idgham_without_ghunnah: String = "#169200"
 
     //Idgham - Mutajanisayn
-        var idgham_mutajanisayn: String = "#A1A1A1"
+    var idgham_mutajanisayn: String = "#A1A1A1"
+    
     //Idgham - Mutaqaribayn
-        var idgham_mutaqaribayn: String = "#A1A1A1"
+    var idgham_mutaqaribayn: String = "#A1A1A1"
 
     //Ghunnah: 2 Vowels
-        var ghunnah: String = "#FF7E1E"
+    var ghunnah: String = "#FF7E1E"
+    
+    public init(hsl:String="#000000",
+                madda_normal:String = "#537FFF",
+                madda_permissible: String = "#4050FF",
+                madda_necesssary: String = "#000EBC",
+                madda_obligatory: String = "#2144C1",
+                qalaqah: String = "#DD0008",
+                ikhafa_shafawi: String = "#D500B7",
+                ikhafa: String = "#9400A8",
+                idgham_shafawi: String = "#58B800",
+                iqlab: String = "#26BFFD",
+                idgham_with_ghunnah: String = "#169777",
+                idgham_without_ghunnah: String = "#169200",
+                idgham_mutajanisayn: String = "#A1A1A1",
+                idgham_mutaqaribayn: String = "#A1A1A1",
+                ghunnah: String = "#FF7E1E") {
+        self.hsl = hsl
+        self.madda_normal = madda_normal
+        self.madda_permissible = madda_permissible
+        self.madda_necesssary = madda_necesssary
+        self.madda_obligatory = madda_obligatory
+        self.qalaqah = qalaqah
+        self.ikhafa_shafawi = ikhafa_shafawi
+        self.ikhafa = ikhafa
+        self.idgham_shafawi = idgham_shafawi
+        self.iqlab = iqlab
+        self.idgham_with_ghunnah = idgham_with_ghunnah
+        self.idgham_without_ghunnah = idgham_without_ghunnah
+        self.idgham_mutajanisayn = idgham_mutajanisayn
+        self.idgham_mutaqaribayn = idgham_mutaqaribayn
+        self.ghunnah = ghunnah
+    }
 }
 
 func build(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
