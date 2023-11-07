@@ -133,74 +133,56 @@ public struct MetaColor{
 
 public func parse(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
     var datas = [TajweedAyah]()
-    do {
-        let tajweedMetas = "hslnpmqocfwiaudbg"
-        print("rawayah \(rawAyah) ")
-        
-        
-        var splits = [String]()
-        var prev = ""
-        var curr = ""
-        var temp = ""
-        var index = 0
-        let aryChar = Array(rawAyah)
-        while index < aryChar.count {
-            curr = String(aryChar[index])
-            if prev == "[" && tajweedMetas.contains(curr){
-                splits.append(temp.utf8DecodedString())
-                splits.append(curr)
-                temp = ""
-                while curr != "[" && index < aryChar.count {
-                    index += 1
-                    curr = String(aryChar[index])
-                }
-            }else if prev == "]"{
-                splits.append(temp.utf8DecodedString())
-                temp = ""
-            }else if prev != "[" {
-                temp.append(prev)
+    let tajweedMetas = "hslnpmqocfwiaudbg"
+    print("rawayah \(rawAyah) ")
+    
+    
+    var splits = [String]()
+    var prev = ""
+    var curr = ""
+    var temp = ""
+    var index = 0
+    let aryChar = Array(rawAyah)
+    while index < aryChar.count {
+        curr = String(aryChar[index])
+        if prev == "[" && tajweedMetas.contains(curr){
+            splits.append(temp.utf8DecodedString())
+            splits.append(curr)
+            temp = ""
+            while curr != "[" && index < aryChar.count {
+                index += 1
+                curr = String(aryChar[index])
             }
-            prev = curr
-            index += 1
-        }
-        if prev != "]" {
+        }else if prev == "]"{
+            splits.append(temp.utf8DecodedString())
+            temp = ""
+        }else if prev != "[" {
             temp.append(prev)
         }
-        /*
-        ayah.forEach { char in
-            if char == "[" || char == "]"{
-                splits.append(temp)
-                temp = ""
-            }else if tajweedMetas.contains(char){
-                splits.append(temp)
-                temp = ""
-                splits.append(String(char))
-            }else{
-                temp.append(char)
-            }
+        prev = curr
+        index += 1
+    }
+    if prev != "]" {
+        temp.append(prev)
+    }
+    splits.append(temp.utf8DecodedString())
+    
+    var metaSpilt:String = ""
+    var i:Int = 0
+    for ayahSpilt in splits {
+        print("ayahSpilt \(ayahSpilt)")
+        if tajweedMetas.contains(ayahSpilt){
+            metaSpilt = ayahSpilt
+        }else if(!metaSpilt.isEmpty){
+            let metaColor = metaToColor(meta:metaSpilt.first!,metaColor: metaColor)
+            
+            datas.append(TajweedAyah(id:i, color: metaColor, text: ayahSpilt))
+            metaSpilt = ""
+            i+=1
+        }else{
+            datas.append(TajweedAyah(id:i, color: "#000000", text: ayahSpilt))
+            i+=1
         }
-         */
-        splits.append(temp.utf8DecodedString())
-        
-        var metaSpilt:String = ""
-        var i:Int = 0
-        for ayahSpilt in splits {
-            print("ayahSpilt \(ayahSpilt)")
-            if tajweedMetas.contains(ayahSpilt){
-                metaSpilt = ayahSpilt
-            }else if(!metaSpilt.isEmpty){
-                let metaColor = metaToColor(meta:metaSpilt.first!,metaColor: metaColor)
-                
-                datas.append(TajweedAyah(id:i, color: metaColor, text: ayahSpilt))
-                metaSpilt = ""
-                i+=1
-            }else{
-                datas.append(TajweedAyah(id:i, color: "#000000", text: ayahSpilt))
-                i+=1
-            }
-        }
-    }catch{
-        print("regex error")
     }
     return datas
 }
