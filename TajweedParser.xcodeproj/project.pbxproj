@@ -14,6 +14,8 @@
 		C035229D2AF73C7400929453 /* TajweedParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C035229C2AF73C7400929453 /* TajweedParser.swift */; };
 		C0F4F9BF2AFA8A4A00AF8DC5 /* Noor e Quran.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0F4F9BC2AFA8A4900AF8DC5 /* Noor e Quran.ttf */; };
 		C0F4F9C12AFA8A4A00AF8DC5 /* Kitab-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0F4F9BE2AFA8A4A00AF8DC5 /* Kitab-Regular.ttf */; };
+		C0F4F9C62AFA923F00AF8DC5 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = C0F4F9C42AFA923F00AF8DC5 /* Podfile */; };
+		C0F4F9C72AFA923F00AF8DC5 /* TajweedParser.podspec in Resources */ = {isa = PBXBuildFile; fileRef = C0F4F9C52AFA923F00AF8DC5 /* TajweedParser.podspec */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,8 @@
 		C0F4F9BC2AFA8A4900AF8DC5 /* Noor e Quran.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Noor e Quran.ttf"; sourceTree = "<group>"; };
 		C0F4F9BE2AFA8A4A00AF8DC5 /* Kitab-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kitab-Regular.ttf"; sourceTree = "<group>"; };
 		C0F4F9C22AFA8A8800AF8DC5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C0F4F9C42AFA923F00AF8DC5 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
+		C0F4F9C52AFA923F00AF8DC5 /* TajweedParser.podspec */ = {isa = PBXFileReference; lastKnownFileType = file; path = TajweedParser.podspec; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,8 @@
 		C03522842AF73C4800929453 /* TajweedParser */ = {
 			isa = PBXGroup;
 			children = (
+				C0F4F9C42AFA923F00AF8DC5 /* Podfile */,
+				C0F4F9C52AFA923F00AF8DC5 /* TajweedParser.podspec */,
 				C0F4F9C32AFA90C000AF8DC5 /* Library */,
 				C0F4F9C22AFA8A8800AF8DC5 /* Info.plist */,
 				C03522862AF73C4800929453 /* TajweedParser.docc */,
@@ -205,7 +211,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0F4F9C62AFA923F00AF8DC5 /* Podfile in Resources */,
 				C0F4F9BF2AFA8A4A00AF8DC5 /* Noor e Quran.ttf in Resources */,
+				C0F4F9C72AFA923F00AF8DC5 /* TajweedParser.podspec in Resources */,
 				C0F4F9C12AFA8A4A00AF8DC5 /* Kitab-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -42,7 +42,7 @@ extension String {
 public func TajweedColorText( text:String, metaColor:MetaColor = MetaColor()) -> Text{
     let string = text.utf8EncodedString()
     let textsAyah = parse(rawAyah: string,metaColor: metaColor)
-    return TextTajweedColors(textAyah: textsAyah,i: 0).font(.custom("Kitab-Regular",size: 24))
+    return TextTajweedColors(textAyah: textsAyah,i: 0)
 }
 
 public struct TajweedAyah:Identifiable{
@@ -136,17 +136,6 @@ public func parse(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
     do {
         let tajweedMetas = "hslnpmqocfwiaudbg"
         print("rawayah \(rawAyah) ")
-        var ayah = ""
-        if #available(iOS 16.0, *) {
-            let atSearch = try Regex("[\\[0-9:]")
-            ayah = rawAyah.utf8DecodedString().replacing(atSearch, with: "")
-            print("ayah \(ayah) ")
-            
-        } else {
-            let regex = try! NSRegularExpression(pattern: "[\\[0-9:]", options: NSRegularExpression.Options.caseInsensitive)
-            let range = NSMakeRange(0, rawAyah.count)
-            ayah = regex.stringByReplacingMatches(in: rawAyah, options: [], range: range, withTemplate: "XX")
-        }
         
         
         var splits = [String]()
