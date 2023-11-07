@@ -12,29 +12,41 @@ import SwiftUI
 public struct TajweedColors: View {
     var text:String
     var metaColor:MetaColor = MetaColor()
-    var font = Font.system(size: 36)
+    var font = Font.custom("Kitab-Regular",size: 24)
     public init(text: String) {
         self.text = text
     }
     
     public var body: some View {
-        let string = text
-        let utf8View: String.UTF8View = string.utf8
-        let textsAyah = build(rawAyah: String(decoding: utf8View, as: UTF8.self),metaColor: metaColor)
+        let string = text.utf8EncodedString()
+        let textsAyah = parse(rawAyah: string,metaColor: metaColor)
         TextTajweedColors(textAyah: textsAyah,i: 0).font(font)
+    }
+}
+
+extension String {
+    func utf8DecodedString()-> String {
+        let data = self.data(using: .utf8)
+        let message = String(data: data!, encoding: .nonLossyASCII) ?? ""
+        return message
+    }
+    
+    func utf8EncodedString()-> String {
+        let messageData = self.data(using: .nonLossyASCII)
+        let text = String(data: messageData!, encoding: .utf8) ?? ""
+        return text
     }
 }
 
 @available(iOS 13.0, *)
 public func TajweedColorText( text:String, metaColor:MetaColor = MetaColor()) -> Text{
-    let string = text
-    let utf8View: String.UTF8View = string.utf8
-    let textsAyah = build(rawAyah: String(decoding: utf8View, as: UTF8.self),metaColor: metaColor)
-    return TextTajweedColors(textAyah: textsAyah,i: 0)
+    let string = text.utf8EncodedString()
+    let textsAyah = parse(rawAyah: string,metaColor: metaColor)
+    return TextTajweedColors(textAyah: textsAyah,i: 0).font(.custom("Kitab-Regular",size: 24))
 }
 
-struct TajweedAyah:Identifiable{
-    var id:Int
+public struct TajweedAyah:Identifiable{
+    public var id:Int
     var color:String
     var text:String
 }
@@ -119,7 +131,7 @@ public struct MetaColor{
     }
 }
 
-func build(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
+public func parse(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
     var datas = [TajweedAyah]()
     do {
         let tajweedMetas = "hslnpmqocfwiaudbg"
@@ -127,7 +139,9 @@ func build(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
         var ayah = ""
         if #available(iOS 16.0, *) {
             let atSearch = try Regex("[\\[0-9:]")
-            ayah = rawAyah.replacing(atSearch, with: "")
+            ayah = rawAyah.utf8DecodedString().replacing(atSearch, with: "")
+            print("ayah \(ayah) ")
+            
         } else {
             let regex = try! NSRegularExpression(pattern: "[\\[0-9:]", options: NSRegularExpression.Options.caseInsensitive)
             let range = NSMakeRange(0, rawAyah.count)
@@ -136,7 +150,34 @@ func build(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
         
         
         var splits = [String]()
+        var prev = ""
+        var curr = ""
         var temp = ""
+        var index = 0
+        let aryChar = Array(rawAyah)
+        while index < aryChar.count {
+            curr = String(aryChar[index])
+            if prev == "[" && tajweedMetas.contains(curr){
+                splits.append(temp.utf8DecodedString())
+                splits.append(curr)
+                temp = ""
+                while curr != "[" && index < aryChar.count {
+                    index += 1
+                    curr = String(aryChar[index])
+                }
+            }else if prev == "]"{
+                splits.append(temp.utf8DecodedString())
+                temp = ""
+            }else if prev != "[" {
+                temp.append(prev)
+            }
+            prev = curr
+            index += 1
+        }
+        if prev != "]" {
+            temp.append(prev)
+        }
+        /*
         ayah.forEach { char in
             if char == "[" || char == "]"{
                 splits.append(temp)
@@ -149,7 +190,8 @@ func build(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
                 temp.append(char)
             }
         }
-        splits.append(temp)
+         */
+        splits.append(temp.utf8DecodedString())
         
         var metaSpilt:String = ""
         var i:Int = 0
@@ -172,6 +214,20 @@ func build(rawAyah: String,metaColor:MetaColor) -> [TajweedAyah]{
         print("regex error")
     }
     return datas
+}
+
+extension String {
+    subscript (bounds: CountableClosedRange<Int>) -> String {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return String(self[start...end])
+    }
+
+    subscript (bounds: CountableRange<Int>) -> String {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return String(self[start..<end])
+    }
 }
 
 @available(iOS 13.0, *)
@@ -277,6 +333,6 @@ extension UIColor {
 struct ContentView_Previews: PreviewProvider {
     @available(iOS 13.0.0, *)
     static var previews: some View {
-        TajweedColors(text:"بِسْمِ [h:1[ٱ]للَّهِ [h:2[ٱ][l[ل]رَّحْمَ[n[ـٰ]نِ [h:3[ٱ][l[ل]رَّح[p[ي]مِ")
+        TajweedColors(text:"بِسْمِ [h:1[ٱ]للَّهِ [h:2[ٱ][l[ل]رَّحْمَ[n[ـٰ]نِ [h:3[ٱ][l[ل]رَّح[p[ِي]مِ")
     }
 }
